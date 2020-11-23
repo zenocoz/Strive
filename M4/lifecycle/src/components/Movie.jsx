@@ -9,7 +9,11 @@ class Movie extends React.Component {
     console.log("Movie re-rendered")
 
     //ajax are best into componentDidMount
+    this.fetchMovie()
+  }
 
+  fetchMovie = async () => {
+    this.setState({ loading: true })
     try {
       let response = await fetch(
         "http://www.omdbapi.com/?apikey=a0871843&s=" + this.props.movieTitle
@@ -28,6 +32,15 @@ class Movie extends React.Component {
       console.log(e)
     }
   }
+
+  //we have both previousProps and previousState at our disposal
+  componentDidUpdate = (previousProps) => {
+    console.log("Movie has updated", this.props.movieTitle)
+    if (previousProps.movieTitle != this.props.movieTitle) {
+      this.fetchMovie()
+    }
+  }
+
   render() {
     return (
       <div>
